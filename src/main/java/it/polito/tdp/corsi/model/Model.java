@@ -27,4 +27,8 @@ public class Model {
 	public List<Studente> getStudenteByCorso(String codins){
 		return this.studenteDAO.getStudentiByCorso(codins);
 	}
+	
+	public List<Divisione> getDivisioneStudenti(String codins){
+		return this.studenteDAO.getDivisioneStudenti(codins);
+	}
 }

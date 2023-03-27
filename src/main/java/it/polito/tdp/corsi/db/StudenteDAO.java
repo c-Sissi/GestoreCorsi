@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.polito.tdp.corsi.model.Divisione;
 import it.polito.tdp.corsi.model.Studente;
 
 public class StudenteDAO {
@@ -25,6 +27,38 @@ public class StudenteDAO {
 			while(rs.next()) {
 				Studente s = new Studente(rs.getInt("matricola"), rs.getString("cognome"),rs.getString("nome"), rs.getString("CDS"));
 				result.add(s);
+			}
+			st.close();
+			rs.close();
+			conn.close();
+			
+			return result;
+		}
+		catch(SQLException e) {
+			System.err.println("Errore nel DAO");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<Divisione> getDivisioneStudenti(String codins){
+		
+		String sql = "select s.CDS, count(*) as n "+
+				"from studente s, iscrizione i "+
+				"where s.matricola = i.matricola and i.codins = ? and s.CDS <> '' " +
+				"group by s.CDS";
+		
+		List<Divisione> result = new ArrayList<Divisione>();
+		
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setString(1, codins);
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()) {
+				Divisione d = new Divisione(rs.getString("CDS"), rs.getInt("n"));
+				result.add(d);
 			}
 			st.close();
 			rs.close();

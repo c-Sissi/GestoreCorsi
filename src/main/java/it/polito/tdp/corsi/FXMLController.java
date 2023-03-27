@@ -5,11 +5,13 @@
 package it.polito.tdp.corsi;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.corsi.model.Corso;
+import it.polito.tdp.corsi.model.Divisione;
 import it.polito.tdp.corsi.model.Model;
 import it.polito.tdp.corsi.model.Studente;
 import javafx.event.ActionEvent;
@@ -104,7 +106,21 @@ public class FXMLController {
 
     @FXML
     void stampaDivisione(ActionEvent event) {
-
+    	txtRisultato.clear();
+    	String codins = txtCorso.getText();
+    	
+    	if(codins.equals(null) || codins.equals("")) {
+    		txtRisultato.appendText("Inserire il codice di un corso");
+    		return;
+    	}
+    	//dovrei controllare anche se il corso esiste o meno
+    	List <Divisione> risultato = this.model.getDivisioneStudenti(codins);
+    	Collections.sort(risultato);
+    	
+    	for(Divisione d: risultato) {
+    		txtRisultato.appendText(d.getCDS() + "\t" + d.getN()+ "\n");
+    	}
+    	
     }
 
     @FXML
