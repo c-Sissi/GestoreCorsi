@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.corsi.model.Corso;
 import it.polito.tdp.corsi.model.Model;
+import it.polito.tdp.corsi.model.Studente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -108,6 +109,17 @@ public class FXMLController {
 
     @FXML
     void stampaStudenti(ActionEvent event) {
+    	txtRisultato.clear();
+    	String codins = txtCorso.getText();
+    	
+    	if(codins.equals(null) || codins.equals("")) {
+    		txtRisultato.appendText("Inserire il codice di un corso");
+    		return;
+    	}
+    	//dovrei controllare anche se il corso esiste o meno
+    	for(Studente s: this.model.getStudenteByCorso(codins)) {
+    		txtRisultato.appendText(s + "\n");
+    	}
 
     }
 
