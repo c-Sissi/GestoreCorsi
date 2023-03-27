@@ -6,6 +6,7 @@ package it.polito.tdp.corsi;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.corsi.model.Corso;
@@ -58,7 +59,7 @@ public class FXMLController {
     		periodoNumerico = Integer.parseInt(periodo);    		
     	}
     	catch(NumberFormatException e) {
-    		txtPeriodo.setText("Inserisci un periodo numerico!");
+    		txtRisultato.setText("Inserisci un periodo numerico!");
     		return;
     	}
     	
@@ -75,7 +76,29 @@ public class FXMLController {
 
     @FXML
     void numeroStudenti(ActionEvent event) {
+    	txtRisultato.clear();
     	
+    	String periodo = txtPeriodo.getText();
+    	int periodoNumerico;
+    	
+    	try {
+    		periodoNumerico = Integer.parseInt(periodo);    		
+    	}
+    	catch(NumberFormatException e) {
+    		txtRisultato.setText("Inserisci un periodo numerico!");
+    		return;
+    	}
+    	
+    	if(periodoNumerico < 1|| periodoNumerico > 2) {
+    		txtRisultato.setText("Inserisci 1 o 2");
+    		return;
+    	}
+    	
+    	Map<Corso,Integer> iscritti = this.model.getIscritti(periodoNumerico);
+    	
+    	for(Corso c : iscritti.keySet()) {
+    		txtRisultato.appendText(c + ". Numero iscritti: " + iscritti.get(c)+ "\n");
+    	}
     }
 
     @FXML
